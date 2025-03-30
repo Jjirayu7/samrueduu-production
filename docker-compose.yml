@@ -1,0 +1,191 @@
+# version: '3.8'
+ 
+# services:
+#   backend:
+#     build: ./backoffice/api-backoffice
+#     ports:
+#       - "3001:3001"  # เปลี่ยนเป็น 3001
+#     env_file:
+#       - backoffice/api-backoffice/.env
+#     volumes:
+#       - ./backoffice/api-backoffice/uploads:/backoffice/api-backoffice/uploads
+#     depends_on:
+#       - postgres
+
+#   app-backoffice:
+#     build: ./backoffice/app-backoffice
+#     ports:
+#       - "3002:80"  # เปลี่ยนเป็น 3002
+#     depends_on:
+#       - backend
+
+#   homepage:
+#     build: ./homepage/app
+#     ports:
+#       - "3000:80"  # เปลี่ยนเป็น 3000
+#     depends_on:
+#       - backend
+
+#   postgres:
+#     image: postgres:15
+#     restart: always
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: password
+#       POSTGRES_DB: mydb
+#     ports:
+#       - "5433:5433"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+#   nginx:
+#     image: nginx:alpine
+#     ports:
+#       - "80:80"
+#     volumes:
+#       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+#     depends_on:
+#       - backend
+#       - app-backoffice
+#       - homepage
+
+# volumes:
+#   postgres_data:
+
+
+# services:
+#   frontend-backoffice:
+#     build:
+#       context: ./backoffice/app-backoffice
+#     ports:
+#       - "3002:3002"
+#     depends_on:
+#       - backend
+  
+#   frontend-client:
+#     build:
+#       context: ./homepage/app
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - backend
+
+#   backend:
+#     build:
+#       context: ./backoffice/api-backoffice
+#     ports:
+#     - "3001:3001" 
+#     depends_on:
+#       db:
+#         condition: service_healthy  # ✅ รอให้ db พร้อมก่อน
+#     environment:
+#       - DATABASE_URL=postgresql://postgres:1234@db:5432/samrueduu
+#     networks:
+#       - backend_network
+#     command: sh -c "npx prisma migrate deploy && npm start"  # ✅ migrate ตอน container start
+
+#   db:
+#     image: postgres:14
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: 1234
+#       POSTGRES_DB: samrueduu
+#     ports:
+#       - "5439:5432"  # ✅ PostgreSQL เปิดที่ host:5433 แต่ container ใช้ 5432
+#     networks:
+#       - backend_network
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U postgres -d samrueduu"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+# networks:
+#   backend_network:
+
+# volumes:
+#   postgres_data:
+
+version: '3.8'
+
+services:
+  frontend-backoffice:
+    build:
+      context: ./backoffice/app-backoffice
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # สำหรับการ hot-reload ใน Docker
+      - HOST=0.0.0.0  # ฟิกซ์ปัญหาการเชื่อมต่อ
+    volumes:
+      - ./backoffice/app-backoffice:/app
+      - /app/node_modules  # ป้องกันการเขียนทับ node_modules
+    working_dir: /app
+    stdin_open: true  # สำหรับ React
+    tty: true  # สำหรับ React
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+    command: sh -c "npm install && npm start"
+
+  frontend-client:
+    build:
+      context: ./homepage/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+
+  backend:
+    build:
+      context: ./backoffice/api-backoffice
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgresql://postgres:1234@db:5432/samrueduu
+      - NODE_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend_network
+    command: sh -c "npx prisma migrate deploy && npm start"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3001/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: samrueduu
+    ports:
+      - "5439:5432"
+    networks:
+      - backend_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d samrueduu"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
