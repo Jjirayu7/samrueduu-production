@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id     Int    @id() @default(autoincrement())
+  name   String
+  user   String @unique()
+  pass   String 
+  status String @default("use")
+}
+
+model Product {
+  id      Int      @id() @default(autoincrement())
+  name    String
+  cost    Int
+  price   Int
+  stock   Int
+  seasons String[]       
+  imgs    String[]
+  img1    String? 
+  img2 String?
+  img3 String?
+  toppic1 String?
+  toppic2 String?
+  toppic3 String?
+  detail1 String?
+  detail2 String?
+  detail3 String?
+  status  String   @default("use")
+  orderDetail  orderDetail[]
+}
+
+model BillSale {
+  id              Int              @id() @default(autoincrement())
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  payDate         DateTime
+  payTime         String
+  status          String           @default("wait")
+}
+
+model orderDetail {
+  id          Int         @id() @default(autoincrement())
+  productId   Int
+  ordersId    Int
+  Product     Product     @relation(fields: [productId], references: [id])
+  orders      orders      @relation(fields: [ordersId], references: [id])
+  cost        Int
+  price       Int
+  qty         Int
+}
+
+model orders {
+  id            Int          @id() @default(autoincrement()) 
+  fullname      String
+  phone         String          
+  address       String   
+  order_id      String       @unique  
+  status        String
+  userCustomerId Int         
+  UserCustomer  UserCustomer @relation(fields: [userCustomerId], references: [id])    
+  session_id    String       @unique
+  createdAt   DateTime @default(now()) // ฟิลด์ที่บันทึกเวลาการสร้าง
+  orderDetail   orderDetail[]
+}
+
+model UserCustomer {
+  id            Int      @id() @default(autoincrement())
+  firstName     String
+  lastName      String
+  userName      String   @unique()
+  email         String   @unique
+  password      String 
+  status        String   @default("use")
+  orders        orders[]
+  userCreatedAt DateTime  @default(now()) 
+  updatedAt     DateTime  @updatedAt 
+  imgProfile    String?
+  role          String    @default("customer")
+  PasswordResetToken PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  token     String
+  expiresAt DateTime
+  UserCustomer  UserCustomer @relation(fields: [userCustomerId], references: [id])
+  userCustomerId Int
+}
+
+model media {
+  id  Int @id @default(autoincrement())
+  src String
+}
+

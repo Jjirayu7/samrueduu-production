@@ -1,0 +1,325 @@
+const express = require('express');
+
+const app = express.Router();
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const bcrypt = require('bcrypt');
+const cors = require("cors");
+
+const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const postmark = require("postmark");
+const fileUpload = require("express-fileupload");
+const fs = require('fs');
+const path = require('path');
+
+
+
+app.use(cors());
+app.use(fileUpload());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+const client = new postmark.ServerClient('eee5df79-9cb3-4978-aeef-3c2ffb34067a');
+
+
+dotenv.config();
+
+// Middleware to check if user is signed in
+function checkSignIn(req, res, next) {
+    try {
+        const secret = process.env.TOKEN_SECRET;
+        if (!secret) {
+            throw new Error('TOKEN_SECRET is not defined');
+        }
+
+        const token = req.headers['authorization'];
+        if (!token) {
+            return res.status(401).json({ message: 'Authorization token is required' });
+        }
+
+        const result = jwt.verify(token, secret);
+        req.user = result; // Attach user data to the request object
+        next();
+    } catch (e) {
+        res.status(401).json({ message: 'Invalid or expired token' });
+    }
+}
+
+// Endpoint for signIn
+app.post('/signIn', async (req, res) => {
+    try {
+        const { userName, password } = req.body;
+
+        // Check if username and password are provided
+        if (!userName || !password) {
+            return res.status(400).json({ message: 'Username and password are required' });
+        }
+
+        // Find user in the database
+        const user = await prisma.userCustomer.findFirst({
+            where: {
+                userName: userName,
+                status: 'use'
+            }
+        });
+
+        // Check if user exists
+        if (!user) {
+            return res.status(401).json({ message: 'Username or password is incorrect' });
+        }
+
+        // Compare passwords
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Username or password is incorrect' });
+        }
+
+        // Create token
+        const secret = process.env.TOKEN_SECRET;
+        if (!secret) {
+            throw new Error('TOKEN_SECRET is not defined');
+        }
+
+        const token = jwt.sign(
+            { id: user.id, firstName: user.firstName, status: user.status },
+            secret,
+            { expiresIn: '30d' }
+        );
+
+        // Send token to the client
+        res.status(200).json({ token });
+    } catch (e) {
+        console.error('Error during sign in:', e);
+        res.status(500).json({ error: 'An error occurred during sign in' });
+    }
+});
+
+// Endpoint for getting user info
+app.get('/info', checkSignIn, async (req, res) => {
+    try {
+        const userId = req.user.id; // Get user ID from the request object
+        const user = await prisma.userCustomer.findFirst({
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                userName: true,
+                imgProfile: true,
+            },
+            where: {
+                id: userId
+            }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ result: user });
+    } catch (e) {
+        console.error('Error fetching user info:', e);
+        res.status(500).json({ error: 'An error occurred while fetching user info' });
+    }
+});
+
+app.post('/register', async (req, res) => {
+    const { firstName, lastName, userName, email, password, repassword } = req.body;
+  
+    if (password !== repassword) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+    }
+  
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const newUser = await prisma.userCustomer.create({
+        data: {
+          firstName,
+          lastName,
+          userName,
+          email,
+          password: hashedPassword,
+        },
+      });
+  
+      res.status(201).json({ message: 'Registration completed', user: newUser });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+  
+  app.post("/forgot-password", async (req, res) => {
+    const { email } = req.body;
+  
+    try {
+      const user = await prisma.userCustomer.findUnique({
+        where: { email },
+      });
+  
+      if (!user) {
+        return res.status(404).json({ message: "Email not found" });
+      }
+  
+      // สร้าง Token สำหรับรีเซ็ตรหัสผ่าน
+      const resetToken = crypto.randomBytes(32).toString("hex"); // Token แบบธรรมดา
+  
+      // บันทึก Token ลงฐานข้อมูล (เก็บ token แบบธรรมดา)
+      await prisma.passwordResetToken.create({
+        data: {
+          userCustomerId: user.id,
+          token: resetToken,  // เก็บ token แบบธรรมดา
+          expiresAt: new Date(Date.now() + 360000), 
+        },
+      });
+  
+      // สร้างลิงก์สำหรับรีเซ็ตรหัสผ่าน
+      const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+  
+      // ส่งอีเมลโดยใช้ Postmark
+      const emailResponse = await client.sendEmail({
+        From: "jirayuwat.nawa@kmutt.ac.th", // อีเมลของคุณ
+        To: email,
+        Subject: "Samrueduu-suppport",
+        HtmlBody: `<p>Link for reset your password : </p><a href="${resetLink}">${resetLink}</a>`,
+      });
+  
+      console.log("Email sent: ", emailResponse);
+  
+      res.json({ message: "ลิงค์สำหรับรีเซ็ตรหัสผ่านถูกส่งไปที่อีเมลแล้ว" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "An error occurred" });
+    }
+  });
+
+  app.post("/reset-password", async (req, res) => {
+    const { token, newPassword } = req.body;
+  
+    try {
+      // ล็อก token และ newPassword ที่ได้รับจาก client
+      console.log("Received token:", token);
+      console.log("Received newPassword:", newPassword);
+  
+      // ค้นหา Token ที่ตรงกันและยังไม่หมดอายุ
+      const resetTokenEntry = await prisma.passwordResetToken.findFirst({
+        where: {
+          token: token,  // เปรียบเทียบกับ token ที่ได้รับจาก client
+          expiresAt: { gte: new Date() }, // ตรวจสอบว่า Token ยังไม่หมดอายุ
+        },
+      });
+  
+      // ล็อกค่า resetTokenEntry ที่ค้นหาจากฐานข้อมูล
+      console.log("Reset Token Entry from DB:", resetTokenEntry);
+  
+      if (!resetTokenEntry) {
+        return res.status(400).json({ message: "Invalid or expired token" });
+      }
+  
+      // อัปเดตรหัสผ่านใหม่
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      console.log("Hashed new password:", hashedPassword);
+  
+      await prisma.userCustomer.update({
+        where: { id: resetTokenEntry.userCustomerId },
+        data: { password: hashedPassword },
+      });
+  
+      // ลบ Token หลังใช้งาน
+      await prisma.passwordResetToken.delete({ where: { id: resetTokenEntry.id } });
+  
+      res.json({ message: "Password has been reset successfully" });
+    } catch (error) {
+      console.error("Error occurred during password reset:", error);
+      res.status(500).json({ message: "An error occurred" });
+    }
+  });
+
+  // ------------------------------------------------------------------------------Profile Page----------------------------------------------------------------------------------------
+  app.put('/change-username', async (req, res) => {
+    try {
+      // ตรวจสอบว่า Token ถูกส่งมาหรือไม่
+      const token = req.headers['authorization']?.split(' ')[1];
+      if (!token) {
+        return res.status(403).json({ message: 'No token provided' });
+      }
+  
+      // ดึงข้อมูล userId จาก Token
+      const decoded = jwt.verify(token, process.env.TOKEN_SECRET); // ใช้ JWT_SECRET สำหรับการยืนยัน token
+      const userId = decoded.id;
+  
+      // ตรวจสอบข้อมูลจาก body
+      const { userName } = req.body;
+      if (!userName) {
+        return res.status(400).json({ message: 'UserName is required' });
+      }
+  
+      // อัปเดตชื่อผู้ใช้
+      const updatedUser = await prisma.userCustomer.update({
+        where: { id: userId },
+        data: { userName },
+      });
+  
+      return res.json({
+        message: 'Username updated successfully',
+        result: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post('/change-password', checkSignIn, async (req, res) => {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+
+    console.log("Old Password:", oldPassword);
+  console.log("New Password:", newPassword);
+  console.log("Confirm Password:", req.body.confirmPassword);
+  
+    try {
+      // ตรวจสอบว่า newPassword กับ confirmPassword ตรงกันไหม
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ message: 'New password and confirm password do not match' });
+      }
+  
+      // ตรวจสอบว่าผู้ใช้มีการระบุรหัสเก่าหรือไม่
+      if (!oldPassword || !newPassword) {
+        return res.status(400).json({ message: 'Old password and new password are required' });
+      }
+  
+      const userId = req.user.id; // ดึง userId จาก Token
+  
+      // ค้นหาผู้ใช้จากฐานข้อมูล
+      const user = await prisma.userCustomer.findUnique({
+        where: { id: userId }
+      });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // เปรียบเทียบรหัสเก่ากับในฐานข้อมูล
+      const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+      if (!isOldPasswordValid) {
+        return res.status(400).json({ message: 'Old password is incorrect' });
+      }
+  
+      // เข้ารหัสรหัสใหม่
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  
+      // อัปเดตรหัสผ่านใหม่
+      await prisma.userCustomer.update({
+        where: { id: userId },
+        data: { password: hashedNewPassword }
+      });
+  
+      res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+      console.error('Error during password change:', error);
+      res.status(500).json({ message: 'An error occurred while changing the password' });
+    }
+  });
+  
+module.exports = app;
