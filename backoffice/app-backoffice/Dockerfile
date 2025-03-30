@@ -29,7 +29,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # ติดตั้ง dependencies
-RUN npm ci
+RUN npm i
 
 # คัดลอก source code
 COPY . .
