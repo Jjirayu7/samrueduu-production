@@ -108,7 +108,7 @@
 # volumes:
 #   postgres_data:
 
-version: '3.8'
+#version: '3.8'
 
 services:
   frontend-backoffice:
@@ -138,7 +138,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - HOST=0.0.0.0
     depends_on:
       - backend
@@ -152,17 +152,22 @@ services:
       - "3001:3001"
     environment:
       - DATABASE_URL=postgresql://postgres:1234@db:5432/samrueduu
-      - NODE_ENV=development
+      - NODE_ENV=production
     depends_on:
       db:
         condition: service_healthy
     networks:
       - backend_network
     command: sh -c "npx prisma migrate deploy && npm start"
+   # healthcheck:
+    #  test: ["CMD-SHELL", "curl -f http://localhost:3001/api/health || exit 1"]
+     # interval: 10s
+      #timeout: 5s
+      #retries: 5
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3001/api/health || exit 1"]
+      test: ["CMD-SHELL", "nc -z localhost 3001 || exit 1"]
       interval: 10s
-      timeout: 5s
+      timeout: 3s
       retries: 5
 
   db:
@@ -175,11 +180,22 @@ services:
       - "5439:5432"
     networks:
       - backend_network
+#    healthcheck:
+ #     test: ["CMD-SHELL", "npx prisma db execute --file=/dev/null --url=$$DATABASE_URL || exit 1"]
+  #    interval: 15s
+   #   timeout: 5s
+    #  retries: 5
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d samrueduu"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 20s
+    #healthcheck:
+     # test: ["CMD-SHELL", "pg_isready -U postgres -d samrueduu"]
+      #interval: 10s
+      #timeout: 5s
+      #retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
