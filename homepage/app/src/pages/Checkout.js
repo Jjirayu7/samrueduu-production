@@ -187,7 +187,7 @@ function Checkout() {
             let imgPath = config.apiPath + "/uploads/" + item.imgs[0];
             return <img className="rounded-4" height="80px" width="80px" src={imgPath} alt="Product" />;
         }
-        return <img className="rounded-4" height="100px" src="imgnot.jpg" alt="No image" />;
+        return <img className="rounded-4" height="100px" src="imgnot.jpg" alt="Noimage" />;
     };
 
     const handleAddressSelect = (selectedAddress) => {

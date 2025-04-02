@@ -276,8 +276,8 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import config from "../config";
 import Swal from "sweetalert2";
-import MyModal from "../components/MyModal";
-import dayjs from "dayjs";
+// import MyModal from "../components/MyModal";
+// import dayjs from "dayjs";
 import HomePage from "../components/HomePage";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -295,11 +295,11 @@ function ProductMain() {
     const [recordInCarts, setRecordInCarts] = useState(0);
     const [sumQty, setSumQty] = useState(0);
     const [sumPrice, setSumPrice] = useState(0);
-    const [customerName, setCustomerName] = useState('');
-    const [customerPhone, setCustomerPhone] = useState('');
-    const [customerAddress, setCustomerAddress] = useState('');
-    const [payDate, setPayDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-    const [payTime, setPayTime] = useState('');
+    // const [customerName, setCustomerName] = useState('');
+    // const [customerPhone, setCustomerPhone] = useState('');
+    // const [customerAddress, setCustomerAddress] = useState('');
+    // const [payDate, setPayDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
+    // const [payTime, setPayTime] = useState('');
     const [selectedSeason, setSelectedSeason] = useState('');
     const seasons = [
         { name: "คิมหันตฤดู", bgColor: "#FFF8DE", borderRadius: "30px 0 0 30px", wrapperBg: "#FFF8DE" },
@@ -392,9 +392,9 @@ function ProductMain() {
     function showImage(item) {
         if (item.imgs && item.imgs.length > 0) {  
             let imgPath = config.apiPath + '/uploads/' + item.imgs[0]; 
-            return <img className="card-img" height="auto" src={imgPath} alt="Product Image" />;
+            return <img className="card-img" height="auto" src={imgPath} alt="ProductImage" />;
         }
-        return <img className="card-img" height="auto" src="imgnot.jpg" alt="No image" />; 
+        return <img className="card-img" height="auto" src="imgnot.jpg" alt="Noimage" />; 
     }
 
     const addToCart = (item) => {
@@ -447,12 +447,12 @@ function ProductMain() {
         setSumQty(sumQty);
     }
 
-    const handleSearch = () => {
-        const result = products.filter(product =>
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredProducts(result);
-    }
+    // const handleSearch = () => {
+    //     const result = products.filter(product =>
+    //         product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    //     );
+    //     setFilteredProducts(result);
+    // }
 
    
     const [currentImageIndex, setCurrentImageIndex] = useState(0);

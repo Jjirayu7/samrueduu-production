@@ -229,22 +229,21 @@ function SignIn() {
                   onChange={(e) => setUser({ ...user, password: e.target.value })}
                   value={user.password}
                 />
+                {user.password && ( // แสดงไอคอนเมื่อมีการพิมพ์
                 <span
                   onClick={togglePassword}
                   style={{
                     position: "absolute",
-                    right: "10px",  // ตั้งไอคอนไว้ทางขวาของช่อง
+                    right: "10px",
                     top: "50%",
-                    transform: "translateY(-50%)", // ทำให้ไอคอนอยู่กลางแนวตั้ง
+                    transform: "translateY(-50%)",
                     cursor: "pointer",
+                    zIndex: 10, // ✅ ป้องกันโดนทับ
                   }}
                 >
-                  {showPassword ? (
-                    <i className="bi bi-eye-slash" /> // ไอคอนเมื่อซ่อนรหัสผ่าน
-                  ) : (
-                    <i className="bi bi-eye" /> // ไอคอนเมื่อแสดงรหัสผ่าน
-                  )}
+                  {showPassword ? <i className="bi bi-eye-slash" /> : <i className="bi bi-eye" />}
                 </span>
+              )}
               </div>
                 <div className="d-flex justify-content-end">
                 <Link to="/forgotPassword">

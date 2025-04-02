@@ -1,12 +1,19 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import config from "../../config";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function SignIn(){
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    pass: "",
+    user: ""
+  });
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSignIn = async () =>{
     try{
@@ -54,16 +61,31 @@ function SignIn(){
                             placeholder="Email"
                             onChange={e => setUser({  ...user, user: e.target.value })}
                             />
-                  </div>
+                  </div> 
                   <h6>รหัสผ่าน</h6> 
                   <div className="input-group mb-3">
-                  <input 
+                    <input 
                             style={{ borderRadius: "30px"}}
-                            type="password" 
+                            type={showPassword ? "text" : "password"}
                             class="form-control" 
                             placeholder="Password"
                             onChange={e => setUser({ ...user, pass: e.target.value })}
-                            />                
+                            />  
+                            {user.pass && ( // แสดงไอคอนเมื่อมีการพิมพ์
+                              <span
+                                onClick={togglePassword}
+                                style={{
+                                  position: "absolute",
+                                  right: "10px",
+                                  top: "50%",
+                                  transform: "translateY(-50%)",
+                                  cursor: "pointer",
+                                  zIndex: 10, // ✅ ป้องกันโดนทับ
+                                }}
+                              >
+                                {showPassword ? <i className="bi bi-eye-slash" /> : <i className="bi bi-eye" />}
+                              </span>
+                            )}              
                   </div> 
                     {/* <div className="d-flex justify-content-end">
                       <h6>ลืมรหัสผ่าน?</h6>

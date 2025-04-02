@@ -1,5 +1,5 @@
 import SideBar from "./SideBar";
-import MenuBar from "./MenuBar";
+// import MenuBar from "./MenuBar";
 import Header from "./Header";
 import Footer from "./Footer";
 

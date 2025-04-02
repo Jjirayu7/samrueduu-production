@@ -476,10 +476,10 @@ function Header({ title }) {
   };
 
   // ฟังก์ชันล้างค่า searchQuery
-  const clearSearchQuery = () => {
-    setSearchQuery("");
-    setShowDropdown(false); // ปิด dropdown เมื่อเคลียร์ค่าค้นหา
-  };
+  // const clearSearchQuery = () => {
+  //   setSearchQuery("");
+  //   setShowDropdown(false); // ปิด dropdown เมื่อเคลียร์ค่าค้นหา
+  // };
 
   return (
     <div 
