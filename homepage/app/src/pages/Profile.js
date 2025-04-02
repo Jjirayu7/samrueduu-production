@@ -14,9 +14,9 @@ function Profile() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState(""); // เพิ่มการเก็บรหัสผ่านเก่า
-  const [fileName, setFileName] = useState('');
+  // const [fileName, setFileName] = useState('');
   const [loading, setLoading] = useState(false);
-  const defaultImage = 'profile-icon.jpg';
+  // const defaultImage = 'profile-icon.jpg';
   
 
   useEffect(() => {
@@ -198,7 +198,7 @@ function Profile() {
           borderRadius: '50%' 
         }} 
         src="imgnot.jpg" 
-        alt="No image" 
+        alt="Noimage" 
       />
     );
   }
@@ -207,7 +207,7 @@ function Profile() {
   const [selectedFile, setSelectedFile] = useState(null); // เก็บไฟล์ที่เลือก
   const [previewImage, setPreviewImage] = useState(user.imgProfile || "profile-icon.jpg"); // แสดงรูปปัจจุบันหรือ Default รูป
   console.log("user.imgProfile",user.imgProfile)
-  const refImgInput = useRef(null); 
+  // const refImgInput = useRef(null); 
   
   const [userCustomer, setUserCustomer] = useState({  });
 

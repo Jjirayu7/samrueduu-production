@@ -51,7 +51,7 @@
 
 // export default SideBar;
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import MenuBar from "./MenuBar";
 import { useNavigate } from "react-router-dom";
@@ -65,16 +65,16 @@ const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef(null);
 
-  const handleLinkClick = () => {
-    setIsOpen(false); 
-  };
+  // const handleLinkClick = () => {
+  //   setIsOpen(false); 
+  // };
 
   // เปิด Sidebar เมื่อเมาส์ชนขอบซ้าย
-  const handleMouseMove = (event) => {
-    if (event.clientX <= 1 && !isOpen) { // ถ้าเมาส์ชนขอบซ้าย 1px
+  const handleMouseMove = useCallback((event) => {
+    if (event.clientX <= 1) {
       setIsOpen(true);
     }
-  };
+  }, []); // ✅ ใช้ useCallback เพื่อให้ฟังก์ชันไม่เปลี่ยนทุกครั้ง
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
@@ -82,7 +82,7 @@ const SideBar = () => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isOpen]);
+  }, [isOpen, handleMouseMove]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

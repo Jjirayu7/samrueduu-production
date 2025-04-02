@@ -32,19 +32,19 @@ function ProductInfo() {
   const [recordInCarts, setRecordInCarts] = useState(0);
   const [sumQty, setSumQty] = useState(0);
   const [sumPrice, setSumPrice] = useState(0);
-  const [customerName, setCustomerName] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
-  const [customerAddress, setCustomerAddress] = useState('');
-  const [payDate, setPayDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-  const [payTime, setPayTime] = useState('');
+  // const [customerName, setCustomerName] = useState('');
+  // const [customerPhone, setCustomerPhone] = useState('');
+  // const [customerAddress, setCustomerAddress] = useState('');
+  // const [payDate, setPayDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
+  // const [payTime, setPayTime] = useState('');
 
-  const Model = () => {
-    const gltf = useLoader(GLTFLoader, "/Sofa Free Version.glb");
+  // const Model = () => {
+  //   const gltf = useLoader(GLTFLoader, "/Sofa Free Version.glb");
   
-    return (
-      <primitive object={gltf.scene} scale={1} />
-    );
-  };
+  //   return (
+  //     <primitive object={gltf.scene} scale={1} />
+  //   );
+  // };
   
 function ShowModel(product) {
   console.log("Product data:", product); // ตรวจสอบค่าของ product ใน Console
@@ -97,80 +97,80 @@ const Model3D = ({ modelPath }) => {
   );
 };
   
-  const handleSave = async () => {
-    try {
-        const payLoad = {
-            customerName: customerName,
-            customerPhone: customerPhone,
-            customerAddress: customerAddress,
-            payDate: payDate,
-            payTime: payTime,
-            carts: carts  
-        }
+//   const handleSave = async () => {
+//     try {
+//         const payLoad = {
+//             customerName: customerName,
+//             customerPhone: customerPhone,
+//             customerAddress: customerAddress,
+//             payDate: payDate,
+//             payTime: payTime,
+//             carts: carts  
+//         }
 
-        const res = await axios.post(config.apiPath + '/api/sale/save', payLoad);
+//         const res = await axios.post(config.apiPath + '/api/sale/save', payLoad);
 
-        if (res.data.message === 'success') {
-            localStorage.removeItem('carts');
-            setRecordInCarts(0);
-            setCarts([]);
+//         if (res.data.message === 'success') {
+//             localStorage.removeItem('carts');
+//             setRecordInCarts(0);
+//             setCarts([]);
 
-            Swal.fire({
-                title: 'บันทึกข้อมูล',
-                text: 'ระบบบันทึกข้อมูลของคุณแล้ว',
-                icon: 'success'
-            })
+//             Swal.fire({
+//                 title: 'บันทึกข้อมูล',
+//                 text: 'ระบบบันทึกข้อมูลของคุณแล้ว',
+//                 icon: 'success'
+//             })
 
-            document.getElementById('modalCart_btnClose').click();
-            setCustomerName('');
-            setCustomerPhone('');
-            setCustomerAddress('');
-            setPayDate(new Date());
-            setPayTime('');
-        }
-    } catch (e) {
-        Swal.fire({
-            title: 'error',
-            text: e.message,
-            icon: 'error'
-        })
-    }
-}
+//             document.getElementById('modalCart_btnClose').click();
+//             setCustomerName('');
+//             setCustomerPhone('');
+//             setCustomerAddress('');
+//             setPayDate(new Date());
+//             setPayTime('');
+//         }
+//     } catch (e) {
+//         Swal.fire({
+//             title: 'error',
+//             text: e.message,
+//             icon: 'error'
+//         })
+//     }
+// }
 
-const handleRemove = async (item) => {
-    try {
-        const button = await Swal.fire({
-            title: 'ลบสินค้า',
-            text: 'คุณต้องการลบสินค้าออกจากตะกร้าใช่หรือไม่',
-            icon: 'question',
-            showCancelButton: true,
-            showConfirmButton: true
-        })
-    if (button.isConfirmed) {
-        let arr = carts;
+// const handleRemove = async (item) => {
+//     try {
+//         const button = await Swal.fire({
+//             title: 'ลบสินค้า',
+//             text: 'คุณต้องการลบสินค้าออกจากตะกร้าใช่หรือไม่',
+//             icon: 'question',
+//             showCancelButton: true,
+//             showConfirmButton: true
+//         })
+//     if (button.isConfirmed) {
+//         let arr = carts;
 
-        for (let i = 0; i < arr.length; i++){
-            const itemInCarts = arr[i];
+//         for (let i = 0; i < arr.length; i++){
+//             const itemInCarts = arr[i];
 
-            if (item.id === itemInCarts.id) {
-                arr.splice(i, 1);
-            }
-        }
-        setCarts(arr);
-        setRecordInCarts(arr.length);
+//             if (item.id === itemInCarts.id) {
+//                 arr.splice(i, 1);
+//             }
+//         }
+//         setCarts(arr);
+//         setRecordInCarts(arr.length);
 
-        localStorage.setItem('carts', JSON.stringify(arr));
+//         localStorage.setItem('carts', JSON.stringify(arr));
 
-        callculatePriceAndQty(arr);
-    }
-    } catch (e) {
-        Swal.fire({
-            title: "error",
-            text: e.message,
-            icon: "error"
-        })
-    }
-}
+//         callculatePriceAndQty(arr);
+//     }
+//     } catch (e) {
+//         Swal.fire({
+//             title: "error",
+//             text: e.message,
+//             icon: "error"
+//         })
+//     }
+// }
 
 const callculatePriceAndQty = (itemInCarts) => {
     let sumQty = 0;
@@ -184,30 +184,30 @@ const callculatePriceAndQty = (itemInCarts) => {
     setSumPrice(sumPrice);
     setSumQty(sumQty);
 }
-const addToCart1 = (item) => {
-  let arr = carts;
-  if (arr === null) {
-      arr = [];
-  }
+// const addToCart1 = (item) => {
+//   let arr = carts;
+//   if (arr === null) {
+//       arr = [];
+//   }
 
-  // เช็คว่ามีสินค้าชิ้นนี้ในตะกร้าแล้วหรือไม่
-  const existingItem = arr.find(cartItem => cartItem.id === item.id);
+//   // เช็คว่ามีสินค้าชิ้นนี้ในตะกร้าแล้วหรือไม่
+//   const existingItem = arr.find(cartItem => cartItem.id === item.id);
 
-  if (existingItem) {
-      // ถ้ามีแล้ว เพิ่มจำนวนสินค้า
-      existingItem.qty = (existingItem.qty || 1) + 1;
-  } else {
-      // ถ้ายังไม่มี ให้เพิ่มสินค้าชิ้นใหม่และตั้งจำนวนเป็น 1
-      arr.push({ ...item, qty: 1 });
-  }
+//   if (existingItem) {
+//       // ถ้ามีแล้ว เพิ่มจำนวนสินค้า
+//       existingItem.qty = (existingItem.qty || 1) + 1;
+//   } else {
+//       // ถ้ายังไม่มี ให้เพิ่มสินค้าชิ้นใหม่และตั้งจำนวนเป็น 1
+//       arr.push({ ...item, qty: 1 });
+//   }
 
-  setCarts(arr);
-  setRecordInCarts(arr.length);
+//   setCarts(arr);
+//   setRecordInCarts(arr.length);
 
-  localStorage.setItem('carts', JSON.stringify(arr));
+//   localStorage.setItem('carts', JSON.stringify(arr));
 
-  fetchDataFromLocal();
-}
+//   fetchDataFromLocal();
+// }
 
 const addToCart = (item) => {
   let arr = carts;
@@ -273,9 +273,9 @@ const fetchData = async () => {
 }
 
     // ฟังก์ชันสำหรับจัดการเมื่อคลิกที่รูปภาพ
-    const handleImageClick = (img) => {
-        setSelectedImage(img);
-    };
+    // const handleImageClick = (img) => {
+    //     setSelectedImage(img);
+    // };
 
   useEffect(() => {
     // ฟังก์ชันดึงข้อมูลสินค้า

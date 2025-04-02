@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet";
-import MyModal from "../components/MyModal";
-import Img from "../components/Img";
+// import MyModal from "../components/MyModal";
+// import Img from "../components/Img";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../config";
 import Swal from "sweetalert2";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import HomePage from "../components/HomePage";
 import { useNavigate } from 'react-router-dom';  
 import { Link } from "react-router-dom";
@@ -19,11 +19,11 @@ function Cart() {
   const [recordInCarts, setRecordInCarts] = useState(0);
   const [sumQty, setSumQty] = useState(0);
   const [sumPrice, setSumPrice] = useState(0);
-  const [customerName, setCustomerName] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
-  const [customerAddress, setCustomerAddress] = useState('');
-  const [payDate, setPayDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-  const [payTime, setPayTime] = useState('');    
+  // const [customerName, setCustomerName] = useState('');
+  // const [customerPhone, setCustomerPhone] = useState('');
+  // const [customerAddress, setCustomerAddress] = useState('');
+  // const [payDate, setPayDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
+  // const [payTime, setPayTime] = useState('');    
   const [isVisible, setIsVisible] = useState(true); // สถานะการแสดงผลของหน้า
     const navigate = useNavigate();
 
@@ -203,29 +203,29 @@ function Cart() {
       }
   };
 
-  const handleAdd1 = (item) => {
-    try {
-        let arr = [...carts]; // คัดลอกตะกร้าปัจจุบัน
-        const itemIndex = arr.findIndex(cartItem => cartItem.id === item.id);
+//   const handleAdd1 = (item) => {
+//     try {
+//         let arr = [...carts]; // คัดลอกตะกร้าปัจจุบัน
+//         const itemIndex = arr.findIndex(cartItem => cartItem.id === item.id);
 
-        if (itemIndex !== -1) {
-            arr[itemIndex].qty = (arr[itemIndex].qty || 1) + 1; // เพิ่มจำนวนสินค้า
-        }
+//         if (itemIndex !== -1) {
+//             arr[itemIndex].qty = (arr[itemIndex].qty || 1) + 1; // เพิ่มจำนวนสินค้า
+//         }
 
-        setCarts(arr);
-        setRecordInCarts(arr.length);
+//         setCarts(arr);
+//         setRecordInCarts(arr.length);
 
-        localStorage.setItem('carts', JSON.stringify(arr)); // บันทึกข้อมูลลง localStorage
+//         localStorage.setItem('carts', JSON.stringify(arr)); // บันทึกข้อมูลลง localStorage
 
-        callculatePriceAndQty(arr); // คำนวณราคาและจำนวนใหม่
-    } catch (e) {
-        Swal.fire({
-            title: "error",
-            text: e.message,
-            icon: "error"
-        });
-    }
-};
+//         callculatePriceAndQty(arr); // คำนวณราคาและจำนวนใหม่
+//     } catch (e) {
+//         Swal.fire({
+//             title: "error",
+//             text: e.message,
+//             icon: "error"
+//         });
+//     }
+// };
 
   const handleAdd = (item) => {
     try {
@@ -403,9 +403,9 @@ function Cart() {
    function showImage(item) {
         if (item.imgs && item.imgs.length > 0) {  
             let imgPath = config.apiPath + '/uploads/' + item.imgs[0]; 
-            return <img className="p-2 m-3" height="100px" src={imgPath} alt="Product Image" />;
+            return <img className="p-2 m-3" height="100px" src={imgPath} alt="Product" />;
         }
-        return <img className="p-2 m-3" height="100px" src="imgnot.jpg" alt="No image" />; 
+        return <img className="p-2 m-3" height="100px" src="imgnot.jpg" alt="Noimage" />; 
     }
     const handleDelete = (item) => {
       Swal.fire({

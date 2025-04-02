@@ -46,9 +46,9 @@ function Footer() {
                 <a href="https://www.youtube.com/@samrueduuofficial" className="me-3">
                   <img src="Logo YouTube.png" alt="YouTube logo" style={{ width: "35px" }} />
                 </a>
-                <a href="">
+                {/* <a href=""> */}
                   <img src="LinkedIn.png" alt="LinkedIn logo" style={{ width: "35px" }} />
-                </a>
+                {/* </a> */}
               </div>
             </div>
           </div>

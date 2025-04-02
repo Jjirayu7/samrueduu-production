@@ -10,7 +10,7 @@ import Swal from 'sweetalert2'; // เพิ่ม import นี้
 import MyModal from "../components/MyModal";
 import { useLocation } from "react-router-dom"; // ใช้ useLocation จาก react-router-dom
 import ReactSelect from 'react-select';
-import ReactSlider from 'react-slider';
+// import ReactSlider from 'react-slider';
 
 function Orders() {
     const pageTitle = 'ประวัติการสั่งซื้อ';
@@ -181,9 +181,9 @@ function Orders() {
         const images = item.Product?.imgs || []; // ใช้ Optional Chaining เพื่อป้องกัน error
         if (images.length > 0 && images[0]) {
             let imgPath = config.apiPath + '/uploads/' + images[0];
-            return <img className="p-2 m-3 rounded-4" height="90px" width="90px" src={imgPath} alt="Product Image" />;
+            return <img className="p-2 m-3 rounded-4" height="90px" width="90px" src={imgPath} alt="ProductImage" />;
         }
-        return <img className="p-2 m-3 rounded-4" height="90px" width="90px" src="imgnot.jpg" alt="No image" />;
+        return <img className="p-2 m-3 rounded-4" height="90px" width="90px" src="imgnot.jpg" alt="Noimage" />;
     };
 
     const navigate = useNavigate(); // ใช้สำหรับนำทางไปยังหน้าตะกร้าสินค้า
@@ -248,8 +248,8 @@ function Orders() {
     const [userAddresses, setUserAddresses] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
 
-    const [selectedAddress, setSelectedAddress] = useState(null); // เก็บที่อยู่ที่เลือก
-    const [selectedPhone, setSelectedPhone] = useState(null); // เก็บเบอร์โทรที่เลือก
+    // const [selectedAddress, setSelectedAddress] = useState(null); // เก็บที่อยู่ที่เลือก
+    // const [selectedPhone, setSelectedPhone] = useState(null); // เก็บเบอร์โทรที่เลือก
     const [selectedOrder, setSelectedOrder] = useState(null); //
 
   useEffect(() => {

@@ -1,24 +1,24 @@
 import { Link } from "react-router-dom";
 import HomePage from "../components/HomePage";
 import { Helmet } from "react-helmet";
-
+import { useEffect } from "react";
 
 function Home() {
   const pageTitle = "สามฤดู";
 
-  const imagesSlider1 = [
-    '17.png',
-    '18.png',
-    '19.png',
-    '17.png',
-    '18.png',
-    '18.png',
-    '19.png',
-    '17.png',
-    '18.png',
-    '19.png',
-  ];
-  
+  // const imagesSlider1 = [
+  //   '17.png',
+  //   '18.png',
+  //   '19.png',
+  //   '17.png',
+  //   '18.png',
+  //   '18.png',
+  //   '19.png',
+  //   '17.png',
+  //   '18.png',
+  //   '19.png',
+  // ];
+
   const imagesSlider2 = [
     '23.png',
     '25.png',
@@ -30,7 +30,7 @@ function Home() {
     '25.png',
     '27.png',
   ];
-  
+
   function Slider({ images, width, height, quantity, reverse }) {
     return (
       <div
@@ -45,56 +45,69 @@ function Home() {
         <div className="list-home">
           {images.map((src, index) => (
             <div key={index} className="item-home" style={{ '--position': index + 1 }}>
-              <img src={src} alt={`Slider Image ${index + 1}`} />
+              <img src={src} alt={`SliderImage ${index + 1}`} />
             </div>
           ))}
         </div>
       </div>
     );
   }
-  window.addEventListener('scroll', function() {
-    const img = document.querySelector('.fruit-frist-img');
-    const scrollPos = window.scrollY; // ความสูงที่เลื่อน
-    const rotation = scrollPos * 0.1; // คูณเพื่อลดความเร็วในการหมุน
-    img.style.transform = `rotate(${rotation}deg)`;
-  });
-  window.addEventListener('scroll', function() {
-    const img = document.querySelector('.fruit-second-img');
-    const imgPosition = img.getBoundingClientRect().top; // ตำแหน่งของรูปภาพจากขอบบนของหน้าจอ
-    const screenHeight = window.innerHeight; // ความสูงของหน้าจอ
-  
-    // ถ้ารูปภาพอยู่ในมุมมองของผู้ใช้
-    if (imgPosition < screenHeight * 0.5 && imgPosition > 0) {
-      img.classList.add('visible');
-    } else {
-      img.classList.remove('visible');
-    }
-  });
-  window.addEventListener('scroll', function() {
-    const img = document.querySelector('.fruit-third-img');
-    const imgPosition = img.getBoundingClientRect().top; // ตำแหน่งของรูปจากขอบบนของ viewport
-    const screenHeight = window.innerHeight; // ความสูงของหน้าจอ
-  
-    // ตรวจสอบว่าอยู่ในมุมมองหรือไม่
-    if (imgPosition < screenHeight * 0.8 && imgPosition > 0) {
-      img.classList.add('visible'); // ขยายเมื่ออยู่ใน viewport
-    } else {
-      img.classList.remove('visible'); // หดกลับเมื่อเลื่อนออก
-    }
-  });
-  
-  window.addEventListener('scroll', function() {
-    const img = document.querySelector('.fruit-fouth-img');
-    const imgPosition = img.getBoundingClientRect().top; // ตำแหน่งของรูปภาพจากขอบบนของหน้าจอ
-    const screenHeight = window.innerHeight; // ความสูงของหน้าจอ
-  
-    // ถ้ารูปภาพอยู่ในมุมมองของผู้ใช้
-    if (imgPosition < screenHeight * 1 && imgPosition > 0) {
-      img.classList.add('visible');
-    } else {
-      img.classList.remove('visible');
-    }
-  });
+
+  // ใช้ useEffect เพื่อให้มั่นใจว่า DOM ถูกโหลดก่อน
+  useEffect(() => {
+    const handleScroll1 = () => {
+      const img = document.querySelector('.fruit-frist-img');
+      const scrollPos = window.scrollY;
+      const rotation = scrollPos * 0.1;
+      if (img) img.style.transform = `rotate(${rotation}deg)`;
+    };
+
+    const handleScroll2 = () => {
+      const img = document.querySelector('.fruit-second-img');
+      const imgPosition = img?.getBoundingClientRect().top;
+      const screenHeight = window.innerHeight;
+      if (imgPosition < screenHeight * 0.5 && imgPosition > 0) {
+        img?.classList.add('visible');
+      } else {
+        img?.classList.remove('visible');
+      }
+    };
+
+    const handleScroll3 = () => {
+      const img = document.querySelector('.fruit-third-img');
+      const imgPosition = img?.getBoundingClientRect().top;
+      const screenHeight = window.innerHeight;
+      if (imgPosition < screenHeight * 0.8 && imgPosition > 0) {
+        img?.classList.add('visible');
+      } else {
+        img?.classList.remove('visible');
+      }
+    };
+
+    const handleScroll4 = () => {
+      const img = document.querySelector('.fruit-fouth-img');
+      const imgPosition = img?.getBoundingClientRect().top;
+      const screenHeight = window.innerHeight;
+      if (imgPosition < screenHeight * 1 && imgPosition > 0) {
+        img?.classList.add('visible');
+      } else {
+        img?.classList.remove('visible');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll1);
+    window.addEventListener('scroll', handleScroll2);
+    window.addEventListener('scroll', handleScroll3);
+    window.addEventListener('scroll', handleScroll4);
+
+    // Clean up the event listeners on component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll1);
+      window.removeEventListener('scroll', handleScroll2);
+      window.removeEventListener('scroll', handleScroll3);
+      window.removeEventListener('scroll', handleScroll4);
+    };
+  }, []);
   
   
   return (
@@ -159,7 +172,7 @@ function Home() {
         <div className="fruit-frist">
           <img
             src="compofruit 1.png"
-            alt="Fruit Image"
+            alt="FruitImage"
             className="fruit-frist-img"
           />
         </div>
@@ -171,7 +184,7 @@ function Home() {
             <div className="d-flex justify-content-end align-item-center" style={{ marginRight: '400px' }}>
               <img
                 src="sunny.png"
-                alt="Fruit Image"
+                alt="FruitImage"
                 className="sunny-img"
               />
               <h1 className="headrueduusun">คิมหันตฤดู</h1>
@@ -185,7 +198,7 @@ function Home() {
             <div className="fruit-second">
               <img
                 src="18.png"
-                alt="Fruit Image"
+                alt="FruitImage"
                 className="fruit-second-img"
               />
             </div>
@@ -201,7 +214,7 @@ function Home() {
               <h1 className="headrueduusnow">เหมันตฤดู</h1>
               <img
                 src="winter.png"
-                alt="Fruit Image"
+                alt="FruitImage"
                 className="winter-img"
               />
 
@@ -210,7 +223,7 @@ function Home() {
             <div className="fruit-third">
               <img
                 src="17.png"
-                alt="Fruit Image"
+                alt="FruitImage"
                 className="fruit-third-img"
               /></div>
             <div className="text-snow">
@@ -233,7 +246,7 @@ function Home() {
             <div className="d-flex justify-content-end align-item-center" style={{ marginRight: '400px' }}>
               <img
                 src="rainy.png"
-                alt="Fruit Image"
+                alt="FruitImage"
                 className="rainny-img"
               />
               <h1 className="headrueduurain">วสันตฤดู</h1>
@@ -252,7 +265,7 @@ function Home() {
             <div className="fruit-fouth">
               <img
                 src="19.png"
-                alt="Fruit Image"
+                alt="FruitImage"
                 className="fruit-fouth-img"
               />
             </div>

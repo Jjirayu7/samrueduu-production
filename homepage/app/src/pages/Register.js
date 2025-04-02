@@ -168,21 +168,45 @@ function Register() {
     repassword: "",
   });
   const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCfPassword, setShowCfPassword] = useState(false);
+
+  
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const toggleCfPassword = () => {
+    setShowCfPassword(!showCfPassword);
+  };
+
+  const validatePassword = (password) => {
+    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return strongRegex.test(password);
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     if (user.password !== user.repassword) {
       Swal.fire({
-        title: "Error",
-        text: "Passwords do not match",
-        icon: "error",
+        title: "โปรดลองอีกครั้ง",
+        text: "รหัสผ่านไม่ตรงกัน",
+        icon: "warning",
       });
       return;
     }
+    if (!validatePassword(user.password)) {
+      setPasswordError(
+        "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร ประกอบด้วยตัวพิมพ์เล็ก พิมพ์ใหญ่ ตัวเลข"
+      );
+      return;
+    } else {
+      setPasswordError(""); // ลบข้อผิดพลาดเมื่อรหัสผ่านผ่านเกณฑ์
+    }
     if (!isPolicyAccepted) {
       Swal.fire({
-        title: "Error",
+        title: "โปรดลองอีกครั้ง",
         text: "กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัวก่อนสมัครสมาชิก",
         icon: "error",
       });
@@ -192,8 +216,8 @@ function Register() {
       const res = await axios.post(config.apiPath + "/user/customer/register", user);
 
       Swal.fire({
-        title: "Success",
-        text: "Registration completed",
+        title: "ลงทะเบียนสำเร็จ",
+        text: "กรุณาเข้าสู่ระบบ",
         icon: "success",
       });
       navigate("/signIn");
@@ -298,7 +322,7 @@ function Register() {
                 />
               </div>
             </div>
-            <div className="mx-2">
+            {/* <div className="mx-2">
               <h6>รหัสผ่าน</h6>
               <div className="input-group mb-3">
                 <input
@@ -323,7 +347,67 @@ function Register() {
                   onChange={(e) => setUser({ ...user, repassword: e.target.value })}
                 />
               </div>
+            </div> */}
+            <div className="mx-2">
+              <h6>รหัสผ่าน</h6>
+              <div className="input-group mb-3 position-relative">
+              <input
+                style={{ borderRadius: "30px" }}
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                placeholder=""
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+              />
+              {user.password && ( // แสดงไอคอนเมื่อมีการพิมพ์
+                <span
+                  onClick={togglePassword}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    zIndex: 10, // ✅ ป้องกันโดนทับ
+                  }}
+                >
+                  {showPassword ? <i className="bi bi-eye-slash" /> : <i className="bi bi-eye" />}
+                </span>
+              )}
             </div>
+
+            </div>
+            <div className="mx-2">
+              <h6>ยืนยันรหัสผ่าน</h6>
+              <div className="input-group mb-3">
+                <input
+                  style={{ borderRadius: "30px" }}
+                  type={showCfPassword ? "text" : "password"}
+                  className="form-control"
+                  placeholder=""
+                  value={user.repassword}
+                  onChange={(e) => setUser({ ...user, repassword: e.target.value })}
+                />
+                {user.password && ( // แสดงไอคอนเมื่อมีการพิมพ์
+                <span
+                  onClick={toggleCfPassword}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    zIndex: 10, // ✅ ป้องกันโดนทับ
+                  }}
+                >
+                  {showPassword ? <i className="bi bi-eye-slash" /> : <i className="bi bi-eye" />}
+                </span>
+              )}
+              </div>
+            </div>
+
+            {/* แสดงข้อผิดพลาดหากรหัสผ่านไม่ตรงเกณฑ์ */}
+            {passwordError && <small style={{ color: "red" }}>{passwordError}</small>}
 
             {/* Checkbox for policy acceptance */}
             <div className="mx-2 my-4">
