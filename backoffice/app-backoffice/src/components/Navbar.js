@@ -3,13 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
     return<>
-         <nav class="main-header navbar navbar-expand navbar-light" style={{ backgroundColor: '#FFF5F6' }}>
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+         <nav className="main-header navbar navbar-expand navbar-light" style={{ backgroundColor: '#FFF5F6' }}>
+    <ul className="navbar-nav">
+      <li className="nav-item">
+        <a className="nav-link" data-widget="pushmenu" href="#" role="button"><i className="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <Link to="/home" class="nav-link">
+      <li className="nav-item d-none d-sm-inline-block">
+        <Link to="/home" className="nav-link">
         หน้าหลัก
         </Link>
       </li>

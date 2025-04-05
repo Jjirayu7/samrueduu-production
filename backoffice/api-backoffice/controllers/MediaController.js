@@ -87,8 +87,8 @@ app.post("/banner/upload", async (req, res) => {
 
         // ใช้ sharp เพื่อลดขนาดภาพและบันทึกไฟล์ใหม่
         await sharp(img.data)
-            .resize(1200) // กำหนดความกว้างเป็น 1200px (อัตโนมัติปรับสูงให้พอดี)
-            .jpeg({ quality: 80 }) // แปลงเป็น JPEG คุณภาพ 80%
+            .resize(1200) 
+            .jpeg({ quality: 90 })
             .toFile(filePath);
 
         // บันทึกลงฐานข้อมูล

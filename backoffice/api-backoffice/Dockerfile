@@ -52,9 +52,6 @@ RUN npx prisma generate
 # คัดลอก source code
 COPY . .
 
-# ตั้งค่า environment variables
-ENV DATABASE_URL="postgresql://postgres:1234@db:5432/samrueduu"
-
 # ตั้งค่า port ที่จะใช้
 EXPOSE 3001
 

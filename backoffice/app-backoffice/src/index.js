@@ -11,6 +11,7 @@ import Product from './pages/backoffice/Product';
 import BillSale from './components/BillSale';
 import Dashboard from './pages/backoffice/Dashboard';
 import Profile from './pages/backoffice/Profile';
+import ProtectedRoute from './pages/backoffice/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -19,23 +20,23 @@ const router = createBrowserRouter([
   },
   {
     path: '/home',
-    element: <Home />
+    element: <ProtectedRoute><Home /></ProtectedRoute>
   },
   {
     path: '/product',
-    element: <Product />
+    element: <ProtectedRoute><Product /></ProtectedRoute>
   },
   {
     path: '/billSale',
-    element: <BillSale />
+    element: <ProtectedRoute><BillSale /></ProtectedRoute>
   },
   {
     path: '/dashboard',
-    element: <Dashboard />
+    element: <ProtectedRoute><Dashboard /></ProtectedRoute>
   },
   {
     path: '/profile',
-    element: <Profile />
+    element: <ProtectedRoute><Profile /></ProtectedRoute>
   }
 ]);
 

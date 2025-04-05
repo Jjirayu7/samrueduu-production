@@ -57,10 +57,10 @@ function Sidebar() {
         <span className="brand-text" style={{ color: '#5A0D6C', fontWeight: 'bold' }}>สามฤดู ผู้ขาย</span>
     </a>
 
-    <div class="sidebar">
-      <div class="user-panel mt-3">
+    <div className="sidebar">
+      <div className="user-panel mt-3">
         <div className="text-center">
-          <div class="image d-flex text-center justify-content-center">
+          <div className="image d-flex text-center justify-content-center">
                     <img 
                     src="logo-2.png" 
                     alt="User Image"
@@ -69,7 +69,7 @@ function Sidebar() {
                       <h4>{user.name}</h4>
                       </a>
                   </div>
-                  <div class="info mt-2">
+                  <div className="info mt-2">
                     <button onClick={handleSignOut} className="btn btn-danger btn-sm">
                       <i className="fa fa-sign-out-alt mr-2"></i>ลงชื่อออก
                     </button>
@@ -78,45 +78,45 @@ function Sidebar() {
         
       </div>
       <nav>
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {/* <li class="nav-header" style={{ color: '#5A0D6C', fontWeight: 'bold' }}>เมนู</li> */}
 
-          <li class="nav-item mt-3">
-            <Link to="/home" class="nav-link">
-              <i class="nav-icon fa fa-home"></i>
+          <li className="nav-item mt-3">
+            <Link to="/home" className="nav-link">
+              <i className="nav-icon fa fa-home"></i>
               <p>
                 หน้าหลัก
-                <span class="badge badge-info right"></span>
+                <span className="badge badge-info right"></span>
               </p>
             </Link>
           </li>
 
-          <li class="nav-item">
-            <Link to="/dashboard" class="nav-link">
-              <i class="nav-icon fa fa-columns"></i>
+          <li className="nav-item">
+            <Link to="/dashboard" className="nav-link">
+              <i className="nav-icon fa fa-columns"></i>
               <p>
                 แดชบอร์ด
-                <span class="badge badge-info right"></span>
+                <span className="badge badge-info right"></span>
               </p>
             </Link>
           </li>
 
-          <li class="nav-item">
-            <Link to="/product" class="nav-link">
-              <i class="nav-icon fa fa-box"></i>
+          <li className="nav-item">
+            <Link to="/product" className="nav-link">
+              <i className="nav-icon fa fa-box"></i>
               <p>
                 สินค้า
-                <span class="badge badge-info right"></span>
+                <span className="badge badge-info right"></span>
               </p>
             </Link>
           </li>
 
-          <li class="nav-item">
-            <Link to="/billSale" class="nav-link">
-            <i class="nav-icon fa fa-list"></i>
+          <li className="nav-item">
+            <Link to="/billSale" className="nav-link">
+            <i className="nav-icon fa fa-list"></i>
               <p>
                 รายงานยอดขาย
-                <span class="badge badge-info right"></span>
+                <span className="badge badge-info right"></span>
               </p>
             </Link>
           </li>

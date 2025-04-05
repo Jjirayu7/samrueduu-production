@@ -43,7 +43,7 @@ function SignIn(){
   }
 
     return(
-        <div class="signin-container">   
+        <div className="signin-container">   
           <div className="signin-image">
             <img src="logo-2.png" alt="Sign In Visual" />
           </div>      
@@ -57,7 +57,7 @@ function SignIn(){
                   <input 
                             style={{ borderRadius: "30px"}}
                             type="email" 
-                            class="form-control" 
+                            className="form-control" 
                             placeholder="Email"
                             onChange={e => setUser({  ...user, user: e.target.value })}
                             />
@@ -67,7 +67,7 @@ function SignIn(){
                     <input 
                             style={{ borderRadius: "30px"}}
                             type={showPassword ? "text" : "password"}
-                            class="form-control" 
+                            className="form-control" 
                             placeholder="Password"
                             onChange={e => setUser({ ...user, pass: e.target.value })}
                             />  

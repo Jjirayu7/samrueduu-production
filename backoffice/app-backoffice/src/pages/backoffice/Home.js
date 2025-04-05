@@ -54,25 +54,66 @@ function Home() {
         }
     };
 
-    const handleUpload = async () => {
-        try {
-            const uploadedImages = [];
+    // const handleUpload = async () => {
+    //     try {
+    //         const uploadedImages = [];
 
-            for (let img of imgs) {
+    //         for (let img of imgs) {
+    //             const formData = new FormData();
+    //             formData.append("img", img);
+
+    //             const res = await axios.post(config.apiPath + "/media/banner/upload", formData, {
+    //                 headers: {
+    //                     "Content-Type": "multipart/form-data",
+    //                     "Authorization": localStorage.getItem("token"),
+    //                 },
+    //             });
+
+    //             if (res.data.newName) {
+    //                 uploadedImages.push(res.data.newName);
+    //             }
+    //         }
+
+    //         Swal.fire({
+    //             title: "อัปโหลดสำเร็จ",
+    //             text: `อัปโหลดไฟล์ ${uploadedImages.length} รายการเรียบร้อย`,
+    //             icon: "success",
+    //         });
+
+    //         setImgs([]); // ล้างรายการหลังอัปโหลดเสร็จ
+    //         return uploadedImages;
+    //     } catch (e) {
+    //         Swal.fire({
+    //             title: "เกิดข้อผิดพลาด",
+    //             text: e.message,
+    //             icon: "error",
+    //         });
+    //         return [];
+    //     }
+    // };
+
+    const [isUploading, setIsUploading] = useState(false);
+
+    const handleUpload = async () => {
+        if (isUploading) return; // ป้องกันการกดซ้ำ
+        setIsUploading(true); // ตั้งสถานะให้อยู่ระหว่างอัปโหลด
+
+        try {
+            const uploadPromises = imgs.map(async (img) => {
                 const formData = new FormData();
                 formData.append("img", img);
 
-                const res = await axios.post(config.apiPath + "/media/banner/upload", formData, {
+                const res = await axios.post(`${config.apiPath}/media/banner/upload`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "Authorization": localStorage.getItem("token"),
                     },
                 });
 
-                if (res.data.newName) {
-                    uploadedImages.push(res.data.newName);
-                }
-            }
+                return res.data.newName; // คืนค่าเฉพาะชื่อไฟล์ใหม่
+            });
+
+            const uploadedImages = await Promise.all(uploadPromises); // อัปโหลดทั้งหมดพร้อมกัน
 
             Swal.fire({
                 title: "อัปโหลดสำเร็จ",
@@ -80,8 +121,8 @@ function Home() {
                 icon: "success",
             });
 
-            setImgs([]); // ล้างรายการหลังอัปโหลดเสร็จ
-            return uploadedImages;
+            setImgs([]); // ล้างรายการรูปหลังอัปโหลดเสร็จ
+            return uploadedImages.filter(Boolean); // กรองค่า null หรือ undefined ออก
         } catch (e) {
             Swal.fire({
                 title: "เกิดข้อผิดพลาด",
@@ -89,6 +130,8 @@ function Home() {
                 icon: "error",
             });
             return [];
+        } finally {
+            setIsUploading(false); // รีเซ็ตสถานะ
         }
     };
 
@@ -159,8 +202,10 @@ function Home() {
                                 <button 
                                     className="btn btn-primary mt-3" 
                                     onClick={handleUpload}
+                                    disabled={isUploading}
+                                    
                                 >
-                                    อัปโหลด
+                                    {isUploading ? "กำลังอัปโหลด..." : "อัปโหลดไฟล์"}
                                 </button>
                             )}
                         </div>
