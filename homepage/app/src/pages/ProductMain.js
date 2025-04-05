@@ -283,7 +283,10 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import useSWR from 'swr';
 
+
+const fetcher = (url) => axios.get(url, config.headers()).then(res => res.data);
 
 function ProductMain() {
     const pageTitle = "สินค้า";
@@ -319,7 +322,7 @@ function ProductMain() {
     useEffect(() => {
       setSearchQuery(query);
       localStorage.setItem("lastSearch", query); // บันทึกค่าลง localStorage
-      console.log("ค่าที่พิมพ์:", query);
+    //   console.log("ค่าที่พิมพ์:", query);
     }, [query]);
 
     const handleSelect = (name, wrapperBg) => {
@@ -344,7 +347,7 @@ function ProductMain() {
     useEffect(() => {
         fetchData();
         fetchDataFromLocal();
-        fetchBanners();
+        // fetchBanners();
         fetchDataTopSell();
     }, []);
     // useEffect(() => {
@@ -469,15 +472,22 @@ function ProductMain() {
     return () => clearInterval(interval);
 }, [banners]); // เพิ่ม 'banners' เป็น dependency เพื่อให้การเปลี่ยนแบนเนอร์ทำงานได้หลังจากดึงข้อมูลจาก API
 
-const fetchBanners = async () => {
-    try {
-        const res = await axios.get(`${config.apiPath}/media/banner`);
-        setBanners(res.data); // บันทึกข้อมูลแบนเนอร์จาก API ลงใน state
-        console.log("Fetched banners:", res.data);
-    } catch (e) {
-        console.error("Error fetching banners:", e);
-    }
-};
+// const fetchBanners = async () => {
+//     try {
+//         const res = await axios.get(`${config.apiPath}/media/banner`);
+//         setBanners(res.data); // บันทึกข้อมูลแบนเนอร์จาก API ลงใน state
+//         console.log("Fetched banners:", res.data);
+//     } catch (e) {
+//         console.error("Error fetching banners:", e);
+//     }
+// };
+const { data: fetchedbanners, error: bannerError } = useSWR(`${config.apiPath}/media/banner`, fetcher, {
+    onSuccess: (data) => setBanners(data),
+});
+
+if (bannerError) return <p>เกิดข้อผิดพลาดในการโหลดแบนเนอร์</p>;
+if (!fetchedbanners) return <p>กำลังโหลดแบนเนอร์...</p>;
+
 
 const handleBannerClick = () => {
     if (productsRef.current) {

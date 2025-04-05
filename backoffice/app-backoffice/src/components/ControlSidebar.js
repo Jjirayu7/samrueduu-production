@@ -1,6 +1,6 @@
 function ControlSidebar() {
     return<>
-    <aside class="control-sidebar control-sidebar-dark">
+    <aside className="control-sidebar control-sidebar-dark">
   </aside>
     </>
 }

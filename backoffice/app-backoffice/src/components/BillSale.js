@@ -174,7 +174,7 @@ function BillSale() {
     const handleStatusChange = (item, newStatus) => {
         if (newStatus === "complete") {
             handlePay(item);
-        } else if (newStatus === "shipped") {
+        } else if (newStatus === "shiped") {
             handleSend(item);
         } else if (newStatus === "cancel") {
             handleCancel(item);

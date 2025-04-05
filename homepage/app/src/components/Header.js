@@ -543,9 +543,12 @@ function Header({ title }) {
                   )}
                 </div>
                   <button 
-                    className="btn btn-primary rounded-end-pill"
+                    className="btn text-white rounded-end-pill"
                     onClick={handleSearch}
-                    style={{ backgroundColor: "#5B166C" }}
+                    style={{ 
+                      backgroundColor: "#5B166C",
+                      borderColor: "#D8BABD",
+                     }}
                   >
                     <div className="d-flex">
                       <i className="bi bi-search "></i>

@@ -257,7 +257,7 @@ function Home() {
                 และต้านทานโรค เช่น ลิ้นจี่ ขนุน และทับทิม ซึ่งมีสารต้านอนุมูลอิสระและวิตามินที่ช่วย
                 เสริมสร้างความแข็งแรงให้ร่างกาย
                 <button id="scrollToTopBtn" className="ms-5 btn scroll-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                <i class="text-color bi bi-arrow-up-circle-fill fs-1"></i><span className="ms-3 text-color">กลับไปด้านบน</span>
+                <i className="text-color bi bi-arrow-up-circle-fill fs-1"></i><span className="ms-3 text-color">กลับไปด้านบน</span>
                 </button>
               </p>
               

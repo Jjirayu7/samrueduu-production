@@ -153,26 +153,61 @@ function Checkout() {
       }
   };
 
-  const handleCheckout = async () => {
-    checkStock();
+//   const handleCheckout = async () => {
+//     checkStock();
+//     if (!name || !address || !phone) {
+//         Swal.fire({
+//             title: "Error",
+//             text: "กรุณากรอกข้อมูลชื่อ, ที่อยู่, และเบอร์โทรศัพท์ให้ครบถ้วน",
+//             icon: "error",
+//         });
+//         return;
+//     }
+
+//     // ตรวจสอบสต็อกสินค้าก่อนทำการสั่งซื้อ
+//     const isStockAvailable = await checkStock();
+//     if (!isStockAvailable) {
+//         return; // หยุดการสั่งซื้อหากสต็อกไม่เพียงพอ
+//     }
+
+//     // ทำการสั่งซื้อ
+//     await placeOrder({ name, phone, address });
+//  };
+
+const [isProcessing, setIsProcessing] = useState(false);  // สถานะเพื่อเช็คว่า API กำลังทำงานอยู่หรือไม่
+
+const handleCheckout = async () => {
+    if (isProcessing) return;  // ถ้ากำลังทำงานอยู่ไม่ให้กดซ้ำ
+    setIsProcessing(true);  // ตั้งสถานะให้กำลังทำงาน
+
     if (!name || !address || !phone) {
         Swal.fire({
             title: "Error",
             text: "กรุณากรอกข้อมูลชื่อ, ที่อยู่, และเบอร์โทรศัพท์ให้ครบถ้วน",
             icon: "error",
         });
+        setIsProcessing(false);  // รีเซ็ตสถานะเมื่อมีข้อผิดพลาด
         return;
     }
 
     // ตรวจสอบสต็อกสินค้าก่อนทำการสั่งซื้อ
     const isStockAvailable = await checkStock();
     if (!isStockAvailable) {
-        return; // หยุดการสั่งซื้อหากสต็อกไม่เพียงพอ
+        Swal.fire({
+            title: "Out of Stock",
+            text: "สินค้าหมดสต็อกแล้ว ไม่สามารถสั่งซื้อได้",
+            icon: "error",
+        });
+        setIsProcessing(false);  // รีเซ็ตสถานะเมื่อสต็อกไม่เพียงพอ
+        return;
     }
 
     // ทำการสั่งซื้อ
     await placeOrder({ name, phone, address });
- };
+
+    setIsProcessing(false);  // รีเซ็ตสถานะเมื่อทำการสั่งซื้อสำเร็จ
+};
+
 
     const toggleEditing = () => {
         setIsEditing(!isEditing);
@@ -544,6 +579,7 @@ function Checkout() {
                 </button>
                 <button
                   onClick={handleCheckout}
+                  disabled={isProcessing}
                   className="btn ms-3 rounded-pill"
                   style={{ backgroundColor: "#5B166C" }}
                 >

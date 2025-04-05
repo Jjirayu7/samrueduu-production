@@ -1,5 +1,5 @@
 const config = {
-    clientPath: 'http://localhost:3000',
+    clientPath: 'http://3.0.101.103:3000',
     headers: () => {
         return{
             headers: {
