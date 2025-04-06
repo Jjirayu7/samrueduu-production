@@ -183,7 +183,6 @@ services:
       - "80:80"
       - "443:443"   # เพิ่มพอร์ต 443 สำหรับ HTTPS
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - frontend-backoffice:/app-backoffice/build
       - frontend-client:/homepage/build
@@ -195,6 +194,16 @@ services:
       - frontend-client
     networks:
       - backend_network
+  
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./nginx/letsencrypt-log:/var/log/letsencrypt
+      - ./nginx/letsencrypt-challenge:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - nginx
 
 
 networks:
