@@ -181,17 +181,21 @@ services:
     image: nginx
     ports:
       - "80:80"
+      - "443:443"   # เพิ่มพอร์ต 443 สำหรับ HTTPS
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - frontend-backoffice:/app-backoffice/build
       - frontend-client:/homepage/build
+      - ./nginx/letsencrypt:/etc/letsencrypt  # เพิ่ม volume สำหรับ Certbot
+      - ./nginx/letsencrypt-log:/var/log/letsencrypt  # เพิ่ม log สำหรับ Certbot
     depends_on:
       - backend
       - frontend-backoffice
       - frontend-client
     networks:
-    - backend_network
+      - backend_network
+
 
 networks:
   backend_network:
