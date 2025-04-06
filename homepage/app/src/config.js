@@ -1,6 +1,6 @@
 const config = {
-    apiPath: 'http://3.0.101.103:3001',
-    backofficePath: 'http://3.0.101.103:3002',
+    apiPath: 'http://api.samrueduu.shop',
+    backofficePath: 'http://backoffice.samrueduu.shop',
     headers: () => {
         return{
             headers: {
