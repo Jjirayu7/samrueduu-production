@@ -49,6 +49,21 @@ EXPOSE 3002
 CMD ["npm", "start"]
 
 
+FROM nginx:alpine
+
+# คัดลอกไฟล์ build จากขั้นตอนที่ 1 ไปยัง Nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# คัดลอกการตั้งค่า Nginx ของคุณ (ถ้ามี)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# เปิด port ที่ Nginx จะใช้
+EXPOSE 80
+
+# เรียกใช้ Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+
 
 
 # Build React
