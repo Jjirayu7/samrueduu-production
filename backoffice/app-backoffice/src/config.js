@@ -13,7 +13,7 @@
 import axios from 'axios';
 
 const config = {
-  apiPath: 'http://3.0.101.103:3001',
+  apiPath: 'http://api.samrueduu.shop',
   headers: () => ({
     headers: {
       Authorization: localStorage.getItem("token"),
