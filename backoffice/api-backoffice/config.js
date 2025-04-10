@@ -1,5 +1,5 @@
 const config = {
-    clientPath: 'http://api.samrueduu.shop',
+    clientPath: 'https://samrueduu.shop',
     headers: () => {
         return{
             headers: {

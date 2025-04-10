@@ -10,13 +10,18 @@ const exceljs = require("exceljs");
 const fs = require("fs");
 const path = require('path');  
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({extended: true, limit: '50mb' }));
 
 
 dotenv.config();
 
-app.use(fileUpload());
+//app.use(fileUpload());
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}));
 
 
 

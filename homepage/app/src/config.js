@@ -1,6 +1,6 @@
 const config = {
-    apiPath: 'http://api.samrueduu.shop',
-    backofficePath: 'http://backoffice.samrueduu.shop',
+    apiPath: 'https://api.samrueduu.shop',
+    backofficePath: 'https://backoffice.samrueduu.shop',
     headers: () => {
         return{
             headers: {
@@ -8,7 +8,7 @@ const config = {
                 // Connection: 'keep-alive',
                 'Cache-Control': 'max-age=3600', // Cache 1 ชม.
             },
-            timeout: 5000,
+            //timeout: 5000,
         };
     },
 };
