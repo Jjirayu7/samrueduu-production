@@ -258,7 +258,7 @@ function SignIn() {
                 </div>
               </form>
               <p className="d-flex justify-content-center mt-3">
-                <h6 className="mt-1">หรือ</h6>
+                <h6 className="mt-1">-หรือ-</h6>
               </p>
             <div className="d-flex justify-content-center">
               {/* <button className="btn mx-2 d-flex bg-white" onClick={handleGoogleLogin}>

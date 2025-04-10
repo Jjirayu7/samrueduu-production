@@ -11,10 +11,27 @@ const app = express();
 //const bodyParser = require('body-parser');
 const cors = require('cors');
 const admin = require('firebase-admin');
+const allowedOrigins = ['https://backoffice.samrueduu.shop', 'https://samrueduu.shop'];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+// Handle preflight requests
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 //app.use(bodyParser.json());
 //app.use(bodyParser.urlencodedf({extended: true}));
-app.use(cors());
+//app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 admin.initializeApp({

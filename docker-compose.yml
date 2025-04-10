@@ -144,6 +144,9 @@ services:
       context: ./backoffice/api-backoffice
     ports:
       - "3001:3001"
+    volumes:
+      - ./backoffice/api-backoffice/uploads:/uploads
+      # - ./backoffice/api-backoffice:/uploads
     environment:
       - DATABASE_URL=postgresql://postgres:3ruedoo4dwinDB@db:5432/samrueduu
       - NODE_ENV=production
