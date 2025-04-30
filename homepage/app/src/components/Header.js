@@ -493,7 +493,7 @@ function Header({ title }) {
             <i className="bi bi-list fs-1 text-color"></i>
           </div>
         </button>
-        <img src="logo-3.png" className="logo-header mt-2" alt=""></img>
+        <img src="/assets-sam/logo-3.webp" className="logo-header mt-2" alt=""></img>
         {/* <h4 className="mt-3 ms-2 text-color text-bold d-none d-md-block">สามฤดู</h4> */}
       </div>
   

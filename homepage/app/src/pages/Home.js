@@ -20,15 +20,15 @@ function Home() {
   // ];
 
   const imagesSlider2 = [
-    '23.png',
-    '25.png',
-    '27.png',
-    '29.png',
-    '31.png',
-    '33.png',
-    '23.png',
-    '25.png',
-    '27.png',
+    '/assets-sam/23.webp',
+    '/assets-sam/25.webp',
+    '/assets-sam/27.webp',
+    '/assets-sam/29.webp',
+    '/assets-sam/31.webp',
+    '/assets-sam/33.webp',
+    '/assets-sam/23.webp',
+    '/assets-sam/25.webp',
+    '/assets-sam/27.webp',
   ];
 
   function Slider({ images, width, height, quantity, reverse }) {
@@ -197,7 +197,7 @@ function Home() {
             </div>
             <div className="fruit-second">
               <img
-                src="18.png"
+                src="/assets-sam/18.webp"
                 alt="FruitImage"
                 className="fruit-second-img"
               />
@@ -222,7 +222,7 @@ function Home() {
 
             <div className="fruit-third">
               <img
-                src="17.png"
+                src="/assets-sam/17.webp"
                 alt="FruitImage"
                 className="fruit-third-img"
               /></div>
@@ -264,7 +264,7 @@ function Home() {
             </div>
             <div className="fruit-fouth">
               <img
-                src="19.png"
+                src="/assets-sam/19.webp"
                 alt="FruitImage"
                 className="fruit-fouth-img"
               />

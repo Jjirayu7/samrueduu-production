@@ -12,7 +12,7 @@ function BackOffice(props) {
             {props.children}
         </div>
 
-        <Footer></Footer>
+       
         <ControlSidebar></ControlSidebar>
     </div>
     </>
