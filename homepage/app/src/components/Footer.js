@@ -41,13 +41,13 @@ function Footer() {
                   <img src="X Logo.png" alt="X logo" style={{ width: "35px" }} />
                 </a>
                 <a href="https://www.instagram.com/samrueduu/?igsh=MW94aGUyaGV5a20xbQ%3D%3D&fbclid=IwY2xjawJU0FNleHRuA2FlbQIxMAABHerx6lZvhGPb1YiYkbmJRFtRjJbi4xOKDWJsQi_GozqecpMObCPUxDEwuA_aem_8U-6qp9YAct9FLIv0XAIxQ#" className="me-3">
-                  <img src="Logo Instagram.png" alt="Instagram logo" style={{ width: "35px" }} />
+                  <img src="/assets-sam/Logo Instagram.webp" alt="Instagram logo" style={{ width: "35px" }} />
                 </a>
                 <a href="https://www.youtube.com/@samrueduuofficial" className="me-3">
-                  <img src="Logo YouTube.png" alt="YouTube logo" style={{ width: "35px" }} />
+                  <img src="/assets-sam/Logo YouTube.webp" alt="YouTube logo" style={{ width: "35px" }} />
                 </a>
                 {/* <a href=""> */}
-                  <img src="LinkedIn.png" alt="LinkedIn logo" style={{ width: "35px" }} />
+                  <img src="/assets-sam/LinkedIn.webp" alt="LinkedIn logo" style={{ width: "35px" }} />
                 {/* </a> */}
               </div>
             </div>

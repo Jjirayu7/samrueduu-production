@@ -50,7 +50,7 @@ function SignIn(){
           <div className="signin-box">
             <div className="p-5" style={{ borderRadius: "30px", backgroundColor: "#fff5f6" }}>
               <div>
-                <h6 className="login-box-msg" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: '20vw' }}>แอดมิน-ล็อคอิน</h6>
+                <h6 className="login-box-msg" style={{ display: "flex", justifyContent: "center", alignItems: "center", width: '20vw' }}>แอดมิน-ล็อคอิน</h6>
                 <div>
                   <h6>ชื่อผู้ใช้</h6>
                   <div className="input-group mb-3 ">               
