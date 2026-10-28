@@ -27,13 +27,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # ติดตั้ง dependencies
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
 # คัดลอก source code
 COPY . .
 
 # สร้างโปรเจค React สำหรับ production
-RUN npm run build
+RUN NODE_OPTIONS="--max-old-space-size=6144" npm run build
 
 # ตั้งค่า port ที่จะใช้
 EXPOSE 3000

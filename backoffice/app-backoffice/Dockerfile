@@ -20,7 +20,6 @@
 # CMD ["nginx", "-g", "daemon off;"] 
 
 # ใช้ Node.js image
-#master
 FROM node:20
 
 # ตั้ง working directory
@@ -30,7 +29,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # ติดตั้ง dependencies
-RUN npm i
+RUN npm ci --legacy-peer-deps
 
 # คัดลอก source code
 COPY . .
