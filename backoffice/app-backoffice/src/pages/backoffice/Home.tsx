@@ -1,4 +1,3 @@
-// @ts-nocheck
 import BackOffice from "../../components/BackOffice";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";

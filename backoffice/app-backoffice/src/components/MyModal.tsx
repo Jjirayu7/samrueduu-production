@@ -1,4 +1,3 @@
-// @ts-nocheck
 function MyModal(props) {
   return<>
       <div className="modal" tabIndex={-1} id={props.id}>

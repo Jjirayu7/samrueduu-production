@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import BackOffice from "../../components/BackOffice";
 import MyModal from "../../components/MyModal";

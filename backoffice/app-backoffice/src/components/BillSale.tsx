@@ -1,4 +1,3 @@
-// @ts-nocheck
 import BackOffice from "../components/BackOffice";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";

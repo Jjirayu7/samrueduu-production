@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ControlSidebar from './ControlSidebar';
 import Footer from './Footer';
 import Navbar from './Navbar';

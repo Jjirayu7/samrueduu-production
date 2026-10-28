@@ -1,4 +1,3 @@
-// @ts-nocheck
 function Footer() {
     return<>
     <footer className="main-footer">
