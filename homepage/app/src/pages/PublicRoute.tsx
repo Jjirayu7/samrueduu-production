@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Navigate } from "react-router-dom";
 
 function PublicRoute({ children }) {

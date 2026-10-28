@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Link } from "react-router-dom";
 import HomePage from "../components/HomePage";
 import { Helmet } from "react-helmet";

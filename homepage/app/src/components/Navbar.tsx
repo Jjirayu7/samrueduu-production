@@ -1,4 +1,3 @@
-// @ts-nocheck
 function Navbar() {
     return<>
          <nav className="main-header navbar navbar-expand navbar-light" style={{ backgroundColor: '#FFF5F6' }}>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import HomePage from "../components/HomePage";
 import { Helmet } from "react-helmet";
 import axios from "axios"; // ใช้ axios สำหรับเรียก API

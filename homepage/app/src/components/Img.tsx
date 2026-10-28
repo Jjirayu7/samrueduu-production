@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 
 const Img = ({ className, src = "defaultNoData.png", alt = "testImg", ...restProps }) => {

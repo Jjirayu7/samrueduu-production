@@ -1,4 +1,3 @@
-// @ts-nocheck
 import SideBar from "./SideBar";
 import MenuBar from "./MenuBar";
 import Header from "./Header";

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import HomePage from '../components/HomePage';
 import { Helmet } from 'react-helmet';

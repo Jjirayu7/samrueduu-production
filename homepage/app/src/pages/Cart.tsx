@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Helmet } from "react-helmet";
 import MyModal from "../components/MyModal";
 import Img from "../components/Img";

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";

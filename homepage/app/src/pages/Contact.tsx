@@ -1,4 +1,3 @@
-// @ts-nocheck
 import HomePage from "../components/HomePage";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaLine } from "react-icons/fa";
 import { Helmet } from "react-helmet";

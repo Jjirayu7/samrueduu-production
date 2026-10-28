@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
