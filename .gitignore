@@ -9,3 +9,5 @@
 *.key
 *service-account*.json
 *firebase-adminsdk*.json
+
+.DS_Store
