@@ -126,27 +126,3 @@ html, body {
 .btn-danger{
   border-radius: 20px;
 }
-.signin-container {
-  display: flex;
-  height: 100vh;
-}
-
-.signin-image {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.signin-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-}
-
-.signin-box {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
